@@ -4,9 +4,8 @@
 
 HTTP Method | Resource URL | Notes
 ---|---|---
-**GET**  | /api/accmeter  | return a accmeter object.
-**POST** | /api/accmeter  | register an accmeter(x,y,z) object.
-
+**GET**  | /accmeter  | return a accmeter object.
+**POST** | /accmeter  | register an accmeter(x,y,z) object.
 
 ## Accmeter JSON example
 ---
