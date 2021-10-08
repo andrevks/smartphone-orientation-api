@@ -1,14 +1,18 @@
 
-from flask import Flask, jsonify, request
-import json
+from flask import Flask, jsonify, request, json
+from flask_cors import CORS, cross_origin
+
+from werkzeug.wrappers import response
 app = Flask(__name__)
-    
+cors = CORS(app, resources={r"*": {'origins':'*'}})
+# cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/')
 @app.route('/home')
 def home():
-  return 'Home Page'
+  return 'Accelerometer FLASK API'
 
 @app.route('/accmeters', methods=['GET'])
 def get_accmeter():
@@ -29,23 +33,44 @@ def get_accmeter():
 
 
 @app.route('/accmeters', methods=['POST'])
+@cross_origin()
 def create_accmeter():
-  content = request.get_json()
-  # title = request.json['title']
-  title = content['title']
-  print(title)
-  # body = request.json['body']
-  body = content['body']
-  print(body)
-  new_accmeter = { 'title':title, 'body':body }
   try:
+    content = request.get_json()
+    # title = request.json['title']
+    title = content['title']
+    print(title)
+    # body = request.json['body']
+    x = content['x']
+    y = content['y']
+    z = content['z']
+    # # body = content['body']
+    # print(body)
+    new_accmeter = { 
+      'title':title,
+      'x': x,
+      'y': y,
+      'z': z
+        }
     with open('ACC_VALUES.json','w') as f:
       json.dump(new_accmeter, f)
 
+    response= json.dumps(new_accmeter)
+    print(f'RESPONSE: {response}')
+
+    return response
+
   except Exception:
     print('Error in saving file')
-  finally:
-      return jsonify(new_accmeter)
+    return None
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add("Access-Control-Allow-Credentials", True)# Required for cookies, authorization headers with HTTPS
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization, Origin, Locale')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
 
 if __name__ == '__main__':
   try:
@@ -55,4 +80,5 @@ if __name__ == '__main__':
   except Exception:
     print('Error in saving file')
 
-  app.run(host='0.0.0.0', port=5050)
+  app.run(host='0.0.0.0', port=5050, debug=True)
+
