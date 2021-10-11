@@ -8,8 +8,26 @@ var coord = {
  x: 0.0,
  y: 0.0,
  z: 0.0,
- title: ""
+ title: "Null acc values"
 }
+
+app.use((req, res, next) => {
+    // res.append('Access-Control-Allow-Origin', ['*']);
+    // res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    // res.append('Access-Control-Allow-Headers', 'Content-Type');
+
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept')
+    res.header('Content-type', 'application/json');
+    res.header('Transfer-Enconding','chunked');
+    res.header('access-control-allow-credentials','true');
+    res.append('Vary','Origin, Accept-Encoding');
+
+
+  next();
+});
+
 
 app.use(cors());
 // add this below app.use("/", routes) to make index.html a static file
@@ -18,37 +36,21 @@ app.route('/')
     res.sendFile(process.cwd() + '/index.html');
 });
 
-//getting information from the database
-// app.get('/verifyData', (req, res) => {
-//     //Searching inside the mongodb database
-//     messageModel 
-//         .findOne()//looking for the message
-//         .sort({ idMensagem: -1 })
-//         .then((msg) => {
-//             statusMsg  = 0 
-//             console.log("Status:",statusMsg);
-
-//             res.json(msg);
-//             console.log("OMNET++ made a request");
-//         })
-//         .catch(err => {
-//           res.status(500).send(err)
-//         })
-// })
-
-// app.get('/lookingStatus', (req,res)=>{
-//     console.log("Panda verified the status");
-//     console.log("Status:", statusMsg);
-//     //console.log("res.json"+ res.json(status))
-//     res.json(statusMsg);
-
-// })
+// getting information from the database
+app.get('/accmeter', (req, res) => {  
+    console.log(coord);
+    const responseMsg = JSON.stringify(coord);
+    console.log("Sending..."+ responseMsg);
+    res.send(responseMsg);
+})
 
 app.post('/accmeter',(req,res)=>{
         let msg = req.body
         console.log('before', msg)
        
-        const {x, y, z, title} = msg;
+        let {x, y, z, title} = msg;
+
+
         coord = {
           x,
           y,
