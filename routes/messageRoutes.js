@@ -46,10 +46,7 @@ app.get('/accmeter', (req, res) => {
 
 app.post('/accmeter',(req,res)=>{
         let msg = req.body
-        console.log('before', msg)
-       
         let {x, y, z, title} = msg;
-
 
         coord = {
           x,
@@ -58,33 +55,13 @@ app.post('/accmeter',(req,res)=>{
           title
         }
 
-        console.log(coord);
-
+        console.log("Receving..."+ coord.title);
         // msg = JSON.stringify(req.body);
         // console.log("Receving..."+ msg);
         const responseMsg = JSON.stringify(coord)
         // const responseMsg = coord
-        console.log("Receving..."+ responseMsg);
         res.send(responseMsg);
-        // statusMsg = 1;
-        // .catch(err => {
-        //   res.status(500).send(err)
-        // })
 })
 
-
-// app.post('/setMensagem', (req, res) => {//I'm sending
-//     let msg = new messageModel(req.body);
-//     msg
-//         .save()
-//         .then((saved) => {
-//             console.log("saving data" + saved);
-//             console.log("Receving..."+ req.body.textoMensagem.Object);
-//             res.send(saved);
-//         })
-//         .catch(err => {
-//           res.status(500).send(err)
-//         })
-// })
 
 module.exports = app
