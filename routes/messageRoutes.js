@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-// const messageModel = require('../models/message');
 const app = express();
-var statusMsg = 1;
 
 var coord = {
  x: 0.0,
@@ -12,9 +10,6 @@ var coord = {
 }
 
 app.use((req, res, next) => {
-    // res.append('Access-Control-Allow-Origin', ['*']);
-    // res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    // res.append('Access-Control-Allow-Headers', 'Content-Type');
 
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers',
@@ -23,7 +18,6 @@ app.use((req, res, next) => {
     res.header('Transfer-Enconding','chunked');
     res.header('access-control-allow-credentials','true');
     res.append('Vary','Origin, Accept-Encoding');
-
 
   next();
 });
@@ -37,29 +31,23 @@ app.route('/')
 });
 
 // getting information from the database
-app.get('/accmeter', (req, res) => {  
-    console.log(coord);
+app.get('/accmeter', (req, res) => { 
+    console.log("Sending..."+ coord.title);
     const responseMsg = JSON.stringify(coord);
-    console.log("Sending..."+ responseMsg);
     res.send(responseMsg);
 })
 
 app.post('/accmeter',(req,res)=>{
         let msg = req.body
         let {x, y, z, title} = msg;
-
         coord = {
           x,
           y,
           z,
           title
         }
-
         console.log("Receving..."+ coord.title);
-        // msg = JSON.stringify(req.body);
-        // console.log("Receving..."+ msg);
         const responseMsg = JSON.stringify(coord)
-        // const responseMsg = coord
         res.send(responseMsg);
 })
 
