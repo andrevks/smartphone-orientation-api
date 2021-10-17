@@ -10,6 +10,10 @@ HTTP Method | Resource URL | Notes
 
 ## Accmeter JSON example
 ---
-      'title':'accelerometer values',
-      'body':{'x':123434, 'y':0.022, 'z':9.80}
+     {
+      "x": "0.0",
+      "y": "0.0",
+      "z": "0.0",
+      "title": "Vertical Cima"
+      }
 ---
